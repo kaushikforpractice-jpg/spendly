@@ -19,7 +19,7 @@ Notes:
 - `/profile`, `/expenses/...` are still placeholders and are not protected in this step.
 
 ## Database changes
-No database changes. The existing `users` table and the `get_user_by_email(email)` helper in `database/db.py` are enough. No new helper is needed.
+No schema changes. The existing `users` table and `get_user_by_email(email)` are used for login. One new read helper, `get_user_by_id(user_id)`, is added to `database/db.py` so each request can confirm the session's user still exists.
 
 ## Templates
 - Create: none
@@ -33,6 +33,7 @@ No database changes. The existing `users` table and the `get_user_by_email(email
     - Signed in: show the user's name and a "Sign out" button inside a `<form method="POST" action="{{ url_for('logout') }}">`.
 
 ## Files to change
+- `database/db.py` — add `get_user_by_id(user_id)` (returns the row or `None`).
 - `app.py` — import `session`, `check_password_hash`; make `login` accept GET and POST; make `logout` POST-only and clear the session; redirect signed-in users away from `/login` and `/register` GET; add a `context_processor` that exposes the current user's name to templates; set `SESSION_COOKIE_SAMESITE = "Lax"`.
 - `templates/login.html`
 - `templates/base.html`
